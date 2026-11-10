@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unblocked Games</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #0c0c10;
+      color: #e8e8ed;
+      min-height: 100vh;
+      padding: 16px;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    h1 {
+      font-size: 1.6rem;
+      font-weight: 650;
+      letter-spacing: -0.02em;
+    }
+    .sub {
+      color: #888;
+      font-size: 0.85rem;
+      margin-top: 4px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 12px;
+      max-width: 960px;
+      margin: 0 auto 24px;
+    }
+    .card {
+      background: #16161d;
+      border: 1px solid #2a2a35;
+      border-radius: 12px;
+      padding: 18px 10px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.15s, transform 0.15s, background 0.15s;
+      user-select: none;
+    }
+    .card:hover {
+      background: #1e1e28;
+      border-color: #3b82f6;
+      transform: translateY(-2px);
+    }
+    .card span {
+      font-size: 0.82rem;
+      font-weight: 550;
+      line-height: 1.25;
+    }
+    #player {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: #000;
+      z-index: 100;
+      flex-direction: column;
+    }
+    #player.active { display: flex; }
+    #bar {
+      height: 42px;
+      background: #111;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 12px;
+      border-bottom: 1px solid #222;
+      flex-shrink: 0;
+    }
+    #bar button {
+      background: #2a2a35;
+      color: #fff;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 500;
+    }
+    #bar button:hover { background: #3a3a48; }
+    #title {
+      flex: 1;
+      font-size: 13px;
+      opacity: 0.9;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    iframe {
+      flex: 1;
+      width: 100%;
+      border: none;
+      background: #000;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Unblocked Games</h1>
+    <p class="sub">Click a game · opens in iframe · works on most school networks that allow the target</p>
+  </header>
+
+  <div class="grid" id="grid"></div>
+
+  <div id="player">
+    <div id="bar">
+      <button onclick="closeGame()">← Back</button>
+      <div id="title"></div>
+      <button onclick="toggleFullscreen()">Fullscreen</button>
+    </div>
+    <iframe id="frame" allowfullscreen allow="autoplay; fullscreen; gamepad; clipboard-write" sandbox="allow-scripts allow-same-origin allow-pointer-lock allow-forms allow-popups allow-modals"></iframe>
+  </div>
+
+  <script>
+    // Mix of popular iframe-friendly games + your own restii-dev projects where possible
+    const games = [
+      { name: "Slope", url: "https://slope.game/" },
+      { name: "1v1.LOL", url: "https://1v1.lol/" },
+      { name: "Retro Bowl", url: "https://retrobowl.me/" },
+      { name: "Cookie Clicker", url: "https://orteil.dashnet.org/cookieclicker/" },
+      { name: "Agar.io", url: "https://agar.io/" },
+      { name: "Shell Shockers", url: "https://shellshock.io/" },
+      { name: "Krunker", url: "https://krunker.io/" },
+      { name: "Drift Hunters", url: "https://drift-hunters.co/" },
+      { name: "RustikOP", url: "https://restii-dev.github.io/RustikOP/" },
+      { name: "RustOS", url: "https://restii-dev.github.io/RustOS/" },
+      { name: "Overt", url: "https://restii-dev.github.io/Overt/" },
+      { name: "Realistic Mario", url: "https://restii-dev.github.io/realisticmario/" },
+      { name: "Realistic Mario 1-1", url: "https://restii-dev.github.io/realistic-mario-1-1/" },
+      { name: "Hurricane Test", url: "https://restii-dev.github.io/HurricaneTest/" },
+      { name: "Armor Test", url: "https://restii-dev.github.io/ArmorTest/" },
+      { name: "Iron Front", url: "https://restii-dev.github.io/Iron-Front/" }
+    ];
+
+    const grid = document.getElementById("grid");
+    games.forEach(g => {
+      const div = document.createElement("div");
+      div.className = "card";
+      div.innerHTML = `<span>${g.name}</span>`;
+      div.onclick = () => openGame(g);
+      grid.appendChild(div);
+    });
+
+    function openGame(g) {
+      document.getElementById("title").textContent = g.name;
+      document.getElementById("frame").src = g.url;
+      document.getElementById("player").classList.add("active");
+    }
+
+    function closeGame() {
+      document.getElementById("player").classList.remove("active");
+      document.getElementById("frame").src = "about:blank";
+    }
+
+    function toggleFullscreen() {
+      const el = document.getElementById("player");
+      if (!document.fullscreenElement) {
+        el.requestFullscreen?.() || el.webkitRequestFullscreen?.();
+      } else {
+        document.exitFullscreen?.() || document.webkitExitFullscreen?.();
+      }
+    }
+
+    // Escape key closes the player
+    document.addEventListener("keydown", e => {
+      if (e.key === "Escape") closeGame();
+    });
+  </script>
+</body>
+</html>
